@@ -1,7 +1,6 @@
-package com.example.lorand.sapiadvers.listing;
+package mananaog.sapiadvers.listing;
 
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lorand.sapiadvers.R;
+import mananaog.sapiadvers.R;
 
 import java.util.ArrayList;
 

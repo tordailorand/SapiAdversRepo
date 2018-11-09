@@ -1,9 +1,9 @@
-package com.example.lorand.sapiadvers.listing;
+package mananaog.sapiadvers.listing;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.lorand.sapiadvers.R;
+import mananaog.sapiadvers.R;
 
 public class ListingDetailsActivity extends AppCompatActivity {
 

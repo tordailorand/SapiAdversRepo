@@ -1,4 +1,4 @@
-package com.example.lorand.sapiadvers;
+package mananaog.sapiadvers;
 
 import org.junit.Test;
 
