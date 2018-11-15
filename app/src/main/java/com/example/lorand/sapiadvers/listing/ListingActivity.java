@@ -1,5 +1,6 @@
 package com.example.lorand.sapiadvers.listing;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,7 +27,12 @@ public class ListingActivity extends AppCompatActivity {
         advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", 32, "", ""));
         advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", 32, "", ""));
 
-        ListingAdapter listingAdapter = new ListingAdapter(advertList);
+        ListingAdapter listingAdapter = new ListingAdapter(new IClickListingListener() {
+            @Override
+            public void onClick(AdverItem item) {
+                startActivity(new Intent(ListingActivity.this,ListingDetailsActivity.class));
+            }
+        }, advertList);
 
         RecyclerView recyclerViewList = findViewById(R.id.recycleViewListing);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
