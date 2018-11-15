@@ -1,4 +1,4 @@
-package com.example.lorand.sapiadvers;
+package mananaog.sapiadvers;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.lorand.sapiadvers", appContext.getPackageName());
+        assertEquals("mananaog.sapiadvers", appContext.getPackageName());
     }
 }

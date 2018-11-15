@@ -1,4 +1,4 @@
-package com.example.lorand.sapiadvers.listing;
+package mananaog.sapiadvers.listing;
 
 public interface IClickListingListener {
 

@@ -1,4 +1,4 @@
-package com.example.lorand.sapiadvers;
+package mananaog.sapiadvers;
 
 import android.content.Intent;
 import android.os.Handler;
