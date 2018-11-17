@@ -1,5 +1,6 @@
 package mananaog.sapiadvers.listing;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,6 +53,8 @@ public class ListingFragment extends Fragment {
 
         public void onClick(AdverItem item) {
             //TODO on click
+            Intent intent = new Intent(getActivity(), ListingDetailsActivity.class);
+            startActivity(intent);
         }
     }
 }

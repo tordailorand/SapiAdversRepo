@@ -2,9 +2,7 @@ package mananaog.sapiadvers.listing;
 
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,20 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import mananaog.sapiadvers.MainActivity;
 import mananaog.sapiadvers.R;
-import mananaog.sapiadvers.SplashActivity;
-import mananaog.sapiadvers.listing.IClickListingListener;
-
-
 
 
 import java.util.ArrayList;
-
-import static android.support.v4.content.ContextCompat.startActivity;
 
 public class ListingAdapter extends RecyclerView .Adapter<ListingAdapter.ListingItemViewHolder>{
 
