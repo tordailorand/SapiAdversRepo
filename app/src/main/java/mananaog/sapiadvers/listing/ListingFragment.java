@@ -3,6 +3,8 @@ package mananaog.sapiadvers.listing;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import mananaog.sapiadvers.R;
+import mananaog.sapiadvers.listing.details.ListingDetailsFragment;
 
 import java.util.ArrayList;
 
@@ -53,8 +56,13 @@ public class ListingFragment extends Fragment {
 
         public void onClick(AdverItem item) {
             //TODO on click
-            Intent intent = new Intent(getActivity(), ListingDetailsActivity.class);
-            startActivity(intent);
+            FragmentManager fragmentManager = getFragmentManager();
+            if (fragmentManager != null) {
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, ListingDetailsFragment.newInstance());
+                transaction.commit();
+            }
+
         }
     }
 }

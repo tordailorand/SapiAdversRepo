@@ -8,6 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import mananaog.sapiadvers.add.AddNewAdvertisementFragment;
+import mananaog.sapiadvers.listing.ListingFragment;
+import mananaog.sapiadvers.listing.details.ListingDetailsFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, HomeFragment.newInstance());
+        transaction.replace(R.id.fragment_container, ListingFragment.newInstance());
         transaction.commit();
     }
 
@@ -31,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
+                case R.id.navigation_add:
+                    selectedFragment = AddNewAdvertisementFragment.newInstance();
+                    break;
                 case R.id.navigation_home:
-                    selectedFragment = HomeFragment.newInstance();
+                    selectedFragment = ListingFragment.newInstance();
                     break;
-                case R.id.navigation_dashboard:
-                    selectedFragment = HomeFragment.newInstance();
-                    break;
-                case R.id.navigation_notifications:
+                case R.id.navigation_profile:
                     selectedFragment = HomeFragment.newInstance();
                     break;
             }
@@ -47,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     };
+
+    private void startListingDetailsFragment (){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, ListingDetailsFragment.newInstance());
+        transaction.commit();
+    }
 
 
 }
