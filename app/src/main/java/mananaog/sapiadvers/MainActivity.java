@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import mananaog.sapiadvers.add.AddNewAdvertisementFragment;
 import mananaog.sapiadvers.listing.ListingFragment;
 import mananaog.sapiadvers.listing.details.ListingDetailsFragment;
+import mananaog.sapiadvers.listing.details.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = ListingFragment.newInstance();
                     break;
                 case R.id.navigation_profile:
-                    selectedFragment = HomeFragment.newInstance();
+                    selectedFragment = ProfileFragment.newInstance();
                     break;
             }
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
