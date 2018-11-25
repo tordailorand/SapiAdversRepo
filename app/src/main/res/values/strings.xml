@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">SapiAdvers</string>
+
+    <string name="title_add">Add</string>
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profile</string>
+    <string name="text_item_long_description">Long description</string>
+    <string name="text_phone_number">Phone number</string>
+    <string name="text_email">E-mail address</string>
+    <string name="text_location">Location</string>
+    <string name="text_creator">Creator</string>
+
+    <string name="text_title">Title</string>
+    <string name="text_short_description">Short Description</string>
+    <string name="text_image">Image</string>
+
+    <string name="text_save">Save</string>
+
+    <string name="text_choose_image">Choose Image</string>
+
+
+    <string-array name="image_chooser_options">
+        <item>Camera</item>
+        <item>Gallery</item>
+    </string-array>
+
+
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_sign_up">Sign up</string>
+
+
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="phone">Phone</string>
+    <string name="error_field_required">This field is required.</string>
+    <string name="go_to_signup_text">Do you have an account? If not Sign Up</string>
+    <string name="go_to_login_text">Do you have an account? Got to login</string>
+
 </resources>
