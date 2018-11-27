@@ -9,8 +9,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 import mananaog.sapiadvers.add.AddNewAdvertisementFragment;
 import mananaog.sapiadvers.auth.SignupActivity;
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, ListingFragment.newInstance());
+        transaction.replace(R.id.fragment_container, setupListingFragment(ListingFragment.LISTING_MODE_ALL_USER));
         transaction.commit();
     }
 
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = AddNewAdvertisementFragment.newInstance();
                     break;
                 case R.id.navigation_home:
-                    selectedFragment = ListingFragment.newInstance();
+                    selectedFragment = setupListingFragment(ListingFragment.LISTING_MODE_ALL_USER);
                     break;
                 case R.id.navigation_profile:
                     selectedFragment = ProfileFragment.newInstance();
@@ -74,10 +77,32 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private ListingFragment setupListingFragment(String listingMode){
+        ListingFragment listingFragment = ListingFragment.newInstance();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(ListingFragment.KEY_LISTING_MODE, listingMode);
+
+        listingFragment.setArguments(bundle);
+
+        return listingFragment;
+    }
+
     private void startListingDetailsFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, ListingDetailsFragment.newInstance());
+        transaction.replace(R.id.fragment_container, setupListingDetailsFragment(ListingDetailsFragment.SHOW_VISITOR_MODE));
         transaction.commit();
+    }
+
+    private Fragment setupListingDetailsFragment(String showingMode) {
+        ListingDetailsFragment listingDetailsFragment = ListingDetailsFragment.newInstance();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(ListingDetailsFragment.KEY_SHOWING_MODE, showingMode);
+
+        listingDetailsFragment.setArguments(bundle);
+
+        return listingDetailsFragment;
     }
 
 

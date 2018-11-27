@@ -37,7 +37,7 @@ import mananaog.sapiadvers.R;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    final private String TAG = "tyukkkk";
+    final private String TAG = LoginActivity.class.getSimpleName();
     private EditText mPhone;
     private FirebaseAuth mAuth;
 
