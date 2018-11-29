@@ -70,13 +70,13 @@ public class ListingFragment extends Fragment {
         ArrayList<AdverItem> advertList = new ArrayList<>();
 
         if (listingMode.equals(LISTING_MODE_ALL_USER)) {
-            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", 32, "", ""));
-            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", 32, "", ""));
-            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", 32, "", ""));
+            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
+            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
+            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
         } else {
-            advertList.add(new AdverItem("USER", "ELADO NEM LOPOTT", 32, "", ""));
-            advertList.add(new AdverItem("USER", "ELADO NEM LOPOTT", 32, "", ""));
-            advertList.add(new AdverItem("USER", "ELADO NEM LOPOTT", 32, "", ""));
+            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
+            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
+            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
         }
 
         return advertList;

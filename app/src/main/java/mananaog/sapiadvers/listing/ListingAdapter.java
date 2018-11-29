@@ -43,7 +43,7 @@ public class ListingAdapter extends RecyclerView .Adapter<ListingAdapter.Listing
     public void onBindViewHolder(@NonNull final ListingItemViewHolder listingItemViewHolder, final int i) {
         AdverItem adver = advertsList.get(i);
         listingItemViewHolder.txtTitle.setText(adver.getTitle());
-        listingItemViewHolder.txtDescription.setText(adver.getDescription());
+        listingItemViewHolder.txtDescription.setText(adver.getLongDescription());
         listingItemViewHolder.txtVisitors.setText(Integer.toString(adver.getVisitors()));
 
         listingItemViewHolder.imgBackground.setImageResource(R.drawable.chicken_logo);

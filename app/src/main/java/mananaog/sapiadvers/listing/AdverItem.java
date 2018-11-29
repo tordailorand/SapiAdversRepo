@@ -1,15 +1,19 @@
 package mananaog.sapiadvers.listing;
 
-class AdverItem  {
+import java.io.Serializable;
+
+public class AdverItem  implements Serializable {
     private String title;
-    private String description;
+    private String shortDescription;
+    private String longDescription;
     private int visitors;
     private String adverUrl;
     private String profilePicture;
 
-    public AdverItem(String title, String description, int visitors, String adverUrl, String profilePicture) {
+    public AdverItem(String title, String shortDescription, String longDescription, int visitors, String adverUrl, String profilePicture) {
         this.title = title;
-        this.description = description;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
         this.visitors = visitors;
         this.adverUrl = adverUrl;
         this.profilePicture = profilePicture;
@@ -23,12 +27,20 @@ class AdverItem  {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
     }
 
     public int getVisitors() {
@@ -59,7 +71,8 @@ class AdverItem  {
     public String toString() {
         return "AdverItem{" +
                 "title='" + title + '\'' +
-                ", description='" + description + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", longDescription='" + longDescription + '\'' +
                 ", visitors=" + visitors +
                 ", adverUrl='" + adverUrl + '\'' +
                 ", profilePicture='" + profilePicture + '\'' +

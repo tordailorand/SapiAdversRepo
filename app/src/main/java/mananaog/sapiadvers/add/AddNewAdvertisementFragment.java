@@ -23,12 +23,17 @@ import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import mananaog.sapiadvers.R;
+
+import mananaog.sapiadvers.listing.AdverItem;
 
 
 public class AddNewAdvertisementFragment extends Fragment {
@@ -56,6 +61,9 @@ public class AddNewAdvertisementFragment extends Fragment {
     private RecyclerView recycleViewAdverPicturesList;
 
     LinearLayoutManager linearLayoutManager;
+
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference dbRef = database.getReference();
 
     public static Fragment newInstance() {
         AddNewAdvertisementFragment fragment = new AddNewAdvertisementFragment();
@@ -135,7 +143,16 @@ public class AddNewAdvertisementFragment extends Fragment {
     }
 
     private void saveItem() {
+        String title = editTextTitle.getText().toString();
+        String shortDescription = editTextShortDescription.getText().toString();
+        String longDescription = editTextLongDescription.getText().toString();
+        int visitors = 0;
+        String adverUrl = "";
+        String profilePicture = "";
 
+        AdverItem adver = new AdverItem(title, shortDescription, longDescription, visitors, adverUrl, profilePicture);
+        DatabaseReference adversRef = dbRef.child("advers").child(title);
+        adversRef.setValue(adver);
     }
 
     private void initViews(View view) {
