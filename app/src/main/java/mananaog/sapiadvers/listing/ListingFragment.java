@@ -1,20 +1,28 @@
 package mananaog.sapiadvers.listing;
 
-import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import mananaog.sapiadvers.R;
 import mananaog.sapiadvers.listing.details.ListingDetailsFragment;
 
 import java.util.ArrayList;
+
 
 public class ListingFragment extends Fragment {
 
@@ -23,6 +31,9 @@ public class ListingFragment extends Fragment {
     public static String LISTING_CURRENT_USER = "current_user";
 
     private String listingMode;
+
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference dbRef = database.getReference();
 
     public static ListingFragment newInstance() {
         ListingFragment fragment = new ListingFragment();
@@ -60,26 +71,43 @@ public class ListingFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycleViewListing);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ArrayList<AdverItem> advertList = getAdvertList();
-
-        ListingAdapter listingAdapter = new ListingAdapter(new clickListener(), advertList);
-        recyclerView.setAdapter(listingAdapter);
+        fillAdvertList(recyclerView);
     }
 
-    private ArrayList<AdverItem> getAdvertList() {
-        ArrayList<AdverItem> advertList = new ArrayList<>();
+    private void fillAdvertList(final RecyclerView recyclerView) {
+        final DatabaseReference adversRef = dbRef.child("advers");
+        adversRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                ArrayList<AdverItem> advertList = new ArrayList<>();
 
-        if (listingMode.equals(LISTING_MODE_ALL_USER)) {
-            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
-            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
-            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
-        } else {
-            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
-            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
-            advertList.add(new AdverItem("KUTYA", "ELADO NEM LOPOTT", "ELADO NEM LOPOTT", 32, "", ""));
-        }
+                for (DataSnapshot adver : snapshot.getChildren()) {
+                    String title = adver.child("title").getValue().toString();
+                    String shortDescription = adver.child("shortDescription").getValue().toString();
+                    String longDescription = adver.child("longDescription").getValue().toString();
+                    int visitors = Integer.parseInt(adver.child("visitors").getValue().toString());
+                    String adverUrl = adver.child("adverUrl").getValue().toString();
+                    String profilePicture = adver.child("profilePicture").getValue().toString();
 
-        return advertList;
+                    AdverItem a = new AdverItem(title, shortDescription, longDescription, visitors, adverUrl, profilePicture);
+
+                    if (listingMode.equals(LISTING_MODE_ALL_USER)) {
+                        advertList.add(a);
+                    } else {
+                        advertList.add(a);
+                    }
+                }
+
+
+                ListingAdapter listingAdapter = new ListingAdapter(new clickListener(), advertList);
+                recyclerView.setAdapter(listingAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -95,6 +123,7 @@ public class ListingFragment extends Fragment {
             }
 
         }
+
     }
 
     private Fragment setupListingDetailsFragment() {
