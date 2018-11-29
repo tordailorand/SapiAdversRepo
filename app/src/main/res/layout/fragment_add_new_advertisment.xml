@@ -74,38 +74,55 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@color/colorGray"
         android:ems="10"
         android:hint="@string/text_location"
         android:inputType="text"
         android:padding="10dp"
         android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/recycleViewAdverPicturesList"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNumber"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <EditText
+        android:id="@+id/editTextEmailAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorGray"
+        android:ems="10"
+        android:hint="@string/text_email"
+        android:inputType="text"
+        android:padding="10dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLocation"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <EditText
         android:id="@+id/editTextLongDescription"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@color/colorGray"
         android:ems="10"
         android:hint="@string/text_item_long_description"
+        android:inputType="textMultiLine"
         android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextPhoneNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextShortDescription"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:inputType="textMultiLine"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextShortDescription" />
 
     <TextView
         android:id="@+id/textViewAddImage"
@@ -116,14 +133,14 @@
         android:layout_marginBottom="8dp"
         android:clickable="true"
         android:drawableTop="@drawable/ic_add_black_24dp"
+        android:focusable="true"
         android:focusableInTouchMode="false"
         android:padding="10dp"
         android:text="@string/text_image"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/buttonSave"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextLocation"
-        android:focusable="true" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
 
     <ImageView
         android:id="@+id/imageViewSlideLeft"
@@ -136,7 +153,7 @@
         android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSave"
         app:layout_constraintStart_toEndOf="@+id/textViewAddImage"
-        app:layout_constraintTop_toBottomOf="@+id/editTextLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
 
     <ImageView
         android:id="@+id/imageViewSlideRight"
@@ -156,12 +173,13 @@
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSave"
         app:layout_constraintEnd_toStartOf="@+id/imageViewSlideRight"
         app:layout_constraintStart_toEndOf="@+id/imageViewSlideLeft"
-        app:layout_constraintTop_toTopOf="@+id/textViewAddImage" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
 
     <Button
         android:id="@+id/buttonSave"
