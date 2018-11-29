@@ -84,16 +84,6 @@ public class AddNewAdvertisementFragment extends Fragment {
 
     private void setupAdvertismentImagesList() {
         advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
 
         imagesListingAdapter = new AddNewAdvertismentImagesAdapter(advertismentImages, getContext());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -143,15 +133,16 @@ public class AddNewAdvertisementFragment extends Fragment {
     }
 
     private void saveItem() {
+        String id = String.valueOf(System.currentTimeMillis());
         String title = editTextTitle.getText().toString();
         String shortDescription = editTextShortDescription.getText().toString();
         String longDescription = editTextLongDescription.getText().toString();
         int visitors = 0;
-        String adverUrl = "";
-        String profilePicture = "";
+        String phone = editTextPhoneNumber.getText().toString();
+        String location = editTextLocation.getText().toString();
 
-        AdverItem adver = new AdverItem(title, shortDescription, longDescription, visitors, adverUrl, profilePicture);
-        DatabaseReference adversRef = dbRef.child("advers").child(title);
+        AdverItem adver = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location);
+        DatabaseReference adversRef = dbRef.child("advers").child(id);
         adversRef.setValue(adver);
     }
 

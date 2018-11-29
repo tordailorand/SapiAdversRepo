@@ -81,20 +81,25 @@ public class ListingFragment extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
                 ArrayList<AdverItem> advertList = new ArrayList<>();
 
-                for (DataSnapshot adver : snapshot.getChildren()) {
-                    String title = adver.child("title").getValue().toString();
-                    String shortDescription = adver.child("shortDescription").getValue().toString();
-                    String longDescription = adver.child("longDescription").getValue().toString();
-                    int visitors = Integer.parseInt(adver.child("visitors").getValue().toString());
-                    String adverUrl = adver.child("adverUrl").getValue().toString();
-                    String profilePicture = adver.child("profilePicture").getValue().toString();
+                for (DataSnapshot adverRef : snapshot.getChildren()) {
+                    try {
+                        String id = adverRef.child("id").getValue().toString();
+                        String title = adverRef.child("title").getValue().toString();
+                        String shortDescription = adverRef.child("shortDescription").getValue().toString();
+                        String longDescription = adverRef.child("longDescription").getValue().toString();
+                        int visitors = Integer.parseInt(adverRef.child("visitors").getValue().toString());
+                        String phone = adverRef.child("phone").getValue().toString();
+                        String location = adverRef.child("location").getValue().toString();
 
-                    AdverItem a = new AdverItem(title, shortDescription, longDescription, visitors, adverUrl, profilePicture);
+                        AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location);
 
-                    if (listingMode.equals(LISTING_MODE_ALL_USER)) {
-                        advertList.add(a);
-                    } else {
-                        advertList.add(a);
+                        if (listingMode.equals(LISTING_MODE_ALL_USER)) {
+                            advertList.add(advertisment);
+                        } else {
+                            advertList.add(advertisment);
+                        }
+                    } catch (Exception e) {
+                        //TODO valami hiba
                     }
                 }
 
@@ -110,15 +115,13 @@ public class ListingFragment extends Fragment {
         });
     }
 
-
     public class clickListener implements IClickListingListener {
-
         public void onClick(AdverItem item) {
             //TODO on click
             FragmentManager fragmentManager = getFragmentManager();
             if (fragmentManager != null) {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, setupListingDetailsFragment());
+                transaction.replace(R.id.fragment_container, setupListingDetailsFragment(item.getId()));
                 transaction.commit();
             }
 
@@ -126,7 +129,7 @@ public class ListingFragment extends Fragment {
 
     }
 
-    private Fragment setupListingDetailsFragment() {
+    private Fragment setupListingDetailsFragment(String id) {
         String showingMode;
 
         ListingDetailsFragment listingDetailsFragment = ListingDetailsFragment.newInstance();
@@ -139,6 +142,7 @@ public class ListingFragment extends Fragment {
             showingMode = ListingDetailsFragment.SHOW_EDITOR_MODE;
         }
         bundle.putString(ListingDetailsFragment.KEY_SHOWING_MODE, showingMode);
+        bundle.putString("id", id);
 
         listingDetailsFragment.setArguments(bundle);
 

@@ -2,21 +2,31 @@ package mananaog.sapiadvers.listing;
 
 import java.io.Serializable;
 
-public class AdverItem  implements Serializable {
+public class AdverItem implements Serializable {
+    private String id;
     private String title;
     private String shortDescription;
     private String longDescription;
     private int visitors;
-    private String adverUrl;
-    private String profilePicture;
+    private String phone;
+    private String location;
 
-    public AdverItem(String title, String shortDescription, String longDescription, int visitors, String adverUrl, String profilePicture) {
+    public AdverItem(String id, String title, String shortDescription, String longDescription, int visitors, String phone, String location) {
+        this.id = id;
         this.title = title;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
         this.visitors = visitors;
-        this.adverUrl = adverUrl;
-        this.profilePicture = profilePicture;
+        this.phone = phone;
+        this.location = location;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -31,12 +41,12 @@ public class AdverItem  implements Serializable {
         return shortDescription;
     }
 
-    public String getLongDescription() {
-        return longDescription;
-    }
-
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
     }
 
     public void setLongDescription(String longDescription) {
@@ -51,20 +61,20 @@ public class AdverItem  implements Serializable {
         this.visitors = visitors;
     }
 
-    public String getAdverUrl() {
-        return adverUrl;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setAdverUrl(String adverUrl) {
-        this.adverUrl = adverUrl;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getLocation() {
+        return location;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     @Override
@@ -74,8 +84,6 @@ public class AdverItem  implements Serializable {
                 ", shortDescription='" + shortDescription + '\'' +
                 ", longDescription='" + longDescription + '\'' +
                 ", visitors=" + visitors +
-                ", adverUrl='" + adverUrl + '\'' +
-                ", profilePicture='" + profilePicture + '\'' +
                 '}';
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -17,10 +18,18 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import mananaog.sapiadvers.R;
+import mananaog.sapiadvers.listing.AdverItem;
+import mananaog.sapiadvers.listing.ListingAdapter;
+import mananaog.sapiadvers.listing.ListingFragment;
 
 public class ListingDetailsFragment extends Fragment {
 
@@ -50,6 +59,9 @@ public class ListingDetailsFragment extends Fragment {
 
     private String showingMode;
 
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference dbRef = database.getReference();
+
     public static ListingDetailsFragment newInstance() {
         ListingDetailsFragment fragment = new ListingDetailsFragment();
         return fragment;
@@ -64,6 +76,9 @@ public class ListingDetailsFragment extends Fragment {
 
         initViews(view);
         setupViewPager();
+
+        getAdverById();
+
         setupData();
 
         return view;
@@ -77,6 +92,54 @@ public class ListingDetailsFragment extends Fragment {
         } else {
             showingMode = SHOW_VISITOR_MODE;
         }
+    }
+
+    private void getAdverById() {
+        Bundle bundle = getArguments();
+        final String id;
+
+        if (bundle != null) {
+            id = bundle.getString("id");
+        } else {
+            id = "-1";
+        }
+
+        final DatabaseReference adversRef = dbRef.child("advers");
+        adversRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild(id)) {
+                    DataSnapshot adverRef = snapshot.child(id);
+
+                    String id = adverRef.child("id").getValue().toString();
+                    String title = adverRef.child("title").getValue().toString();
+                    String shortDescription = adverRef.child("shortDescription").getValue().toString();
+                    String longDescription = adverRef.child("longDescription").getValue().toString();
+                    int visitors = Integer.parseInt(adverRef.child("visitors").getValue().toString());
+                    String phone = adverRef.child("phone").getValue().toString();
+                    String location = adverRef.child("location").getValue().toString();
+
+                    AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location);
+
+                    fillInputs(advertisment);
+                } else {
+                    //TODO nincs ilyen hirdetes
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void fillInputs(AdverItem advertisment){
+        textViewTitle.setText(advertisment.getTitle());
+        textViewLongDescription.setText(advertisment.getLongDescription());
+        textViewPhoneNumber.setText(advertisment.getPhone());
+//        textViewEmail.setText(advertisment.getEmail());
+        textViewLocation.setText(advertisment.getLocation());
     }
 
     private void setupViewPager() {
