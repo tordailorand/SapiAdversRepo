@@ -1,7 +1,6 @@
 package mananaog.sapiadvers.listing;
 
 
-
 import android.content.Context;
 
 import android.support.annotation.NonNull;
@@ -18,13 +17,13 @@ import mananaog.sapiadvers.R;
 
 import java.util.ArrayList;
 
-public class ListingAdapter extends RecyclerView .Adapter<ListingAdapter.ListingItemViewHolder>{
+public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ListingItemViewHolder> {
 
     private IClickListingListener clickListingListener;
-    private ArrayList<AdverItem> advertsList ;
+    private ArrayList<AdverItem> advertsList;
     private Context context;
 
-    public ListingAdapter(IClickListingListener clickListingListener,ArrayList<AdverItem> advertsList) {
+    public ListingAdapter(IClickListingListener clickListingListener, ArrayList<AdverItem> advertsList) {
         this.clickListingListener = clickListingListener;
         this.advertsList = advertsList;
     }
@@ -43,7 +42,7 @@ public class ListingAdapter extends RecyclerView .Adapter<ListingAdapter.Listing
     public void onBindViewHolder(@NonNull final ListingItemViewHolder listingItemViewHolder, final int i) {
         AdverItem adver = advertsList.get(i);
         listingItemViewHolder.txtTitle.setText(adver.getTitle());
-        listingItemViewHolder.txtDescription.setText(adver.getDescription());
+        listingItemViewHolder.txtDescription.setText(adver.getLongDescription());
         listingItemViewHolder.txtVisitors.setText(Integer.toString(adver.getVisitors()));
 
         listingItemViewHolder.imgBackground.setImageResource(R.drawable.chicken_logo);
@@ -52,9 +51,9 @@ public class ListingAdapter extends RecyclerView .Adapter<ListingAdapter.Listing
         listingItemViewHolder.imgBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-if(clickListingListener!=null){
-    clickListingListener.onClick(advertsList.get(listingItemViewHolder.getAdapterPosition()));
-}
+                if (clickListingListener != null) {
+                    clickListingListener.onClick(advertsList.get(listingItemViewHolder.getAdapterPosition()));
+                }
 
             }
         });

@@ -1,18 +1,32 @@
 package mananaog.sapiadvers.listing;
 
-class AdverItem  {
-    private String title;
-    private String description;
-    private int visitors;
-    private String adverUrl;
-    private String profilePicture;
+import java.io.Serializable;
 
-    public AdverItem(String title, String description, int visitors, String adverUrl, String profilePicture) {
+public class AdverItem implements Serializable {
+    private String id;
+    private String title;
+    private String shortDescription;
+    private String longDescription;
+    private int visitors;
+    private String phone;
+    private String location;
+
+    public AdverItem(String id, String title, String shortDescription, String longDescription, int visitors, String phone, String location) {
+        this.id = id;
         this.title = title;
-        this.description = description;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
         this.visitors = visitors;
-        this.adverUrl = adverUrl;
-        this.profilePicture = profilePicture;
+        this.phone = phone;
+        this.location = location;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -23,12 +37,20 @@ class AdverItem  {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
     }
 
     public int getVisitors() {
@@ -39,30 +61,29 @@ class AdverItem  {
         this.visitors = visitors;
     }
 
-    public String getAdverUrl() {
-        return adverUrl;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setAdverUrl(String adverUrl) {
-        this.adverUrl = adverUrl;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getLocation() {
+        return location;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     @Override
     public String toString() {
         return "AdverItem{" +
                 "title='" + title + '\'' +
-                ", description='" + description + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", longDescription='" + longDescription + '\'' +
                 ", visitors=" + visitors +
-                ", adverUrl='" + adverUrl + '\'' +
-                ", profilePicture='" + profilePicture + '\'' +
                 '}';
     }
 

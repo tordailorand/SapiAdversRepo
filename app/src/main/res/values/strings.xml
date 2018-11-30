@@ -10,6 +10,7 @@
     <string name="text_location">Location</string>
     <string name="text_creator">Creator</string>
 
+
     <string name="text_title">Title</string>
     <string name="text_short_description">Short Description</string>
     <string name="text_image">Image</string>
@@ -36,7 +37,14 @@
     <string name="last_name">Last name</string>
     <string name="phone">Phone</string>
     <string name="error_field_required">This field is required.</string>
+    <string name="error_field_no_user_phone">No user with this phone number</string>
+    <string name="error_field_invalid_phone">Login error!</string>
+    <string name="error_field_cannot_send_SMS">We cannot send you SMS to this phone number</string>
     <string name="go_to_signup_text">Do you have an account? If not Sign Up</string>
     <string name="go_to_login_text">Do you have an account? Got to login</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

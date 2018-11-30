@@ -23,12 +23,17 @@ import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import mananaog.sapiadvers.R;
+
+import mananaog.sapiadvers.listing.AdverItem;
 
 
 public class AddNewAdvertisementFragment extends Fragment {
@@ -57,6 +62,9 @@ public class AddNewAdvertisementFragment extends Fragment {
 
     LinearLayoutManager linearLayoutManager;
 
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference dbRef = database.getReference();
+
     public static Fragment newInstance() {
         AddNewAdvertisementFragment fragment = new AddNewAdvertisementFragment();
         return fragment;
@@ -76,16 +84,6 @@ public class AddNewAdvertisementFragment extends Fragment {
 
     private void setupAdvertismentImagesList() {
         advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-//        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
 
         imagesListingAdapter = new AddNewAdvertismentImagesAdapter(advertismentImages, getContext());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -135,7 +133,17 @@ public class AddNewAdvertisementFragment extends Fragment {
     }
 
     private void saveItem() {
+        String id = String.valueOf(System.currentTimeMillis());
+        String title = editTextTitle.getText().toString();
+        String shortDescription = editTextShortDescription.getText().toString();
+        String longDescription = editTextLongDescription.getText().toString();
+        int visitors = 0;
+        String phone = editTextPhoneNumber.getText().toString();
+        String location = editTextLocation.getText().toString();
 
+        AdverItem adver = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location);
+        DatabaseReference adversRef = dbRef.child("advers").child(id);
+        adversRef.setValue(adver);
     }
 
     private void initViews(View view) {
