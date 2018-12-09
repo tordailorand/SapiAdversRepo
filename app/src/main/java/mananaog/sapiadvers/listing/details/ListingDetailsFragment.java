@@ -56,7 +56,7 @@ public class ListingDetailsFragment extends Fragment {
     private TextView textViewCreator;
     private TextView textViewTitle;
 
-    private ArrayList<Drawable> imageList;
+    private ArrayList<String> imageList;
 
     private String showingMode;
 
@@ -76,7 +76,6 @@ public class ListingDetailsFragment extends Fragment {
         getShowingMode();
 
         initViews(view);
-        setupViewPager();
 
         getAdverById();
 
@@ -112,19 +111,14 @@ public class ListingDetailsFragment extends Fragment {
                 if (snapshot.hasChild(id)) {
                     DataSnapshot adverRef = snapshot.child(id);
 
-                    String id = adverRef.child("id").getValue().toString();
-                    String title = adverRef.child("title").getValue().toString();
-                    String shortDescription = adverRef.child("shortDescription").getValue().toString();
-                    String longDescription = adverRef.child("longDescription").getValue().toString();
-                    int visitors = Integer.parseInt(adverRef.child("visitors").getValue().toString());
-                    String phone = adverRef.child("phone").getValue().toString();
-                    String location = adverRef.child("location").getValue().toString();
-                    String[] bazd = {"abc", "def", "ghf"};
-                    ArrayList<String> images = new ArrayList<>(Arrays.asList(bazd));
+                    try {
+                        AdverItem advertisment = adverRef.getValue(AdverItem.class);
 
-                    AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location, images);
-
-                    fillInputs(advertisment);
+                        fillInputs(advertisment);
+                        setupViewPager(advertisment);
+                    } catch (Exception e) {
+                        //Error
+                    }
                 } else {
                     //TODO nincs ilyen hirdetes
                 }
@@ -145,11 +139,14 @@ public class ListingDetailsFragment extends Fragment {
         textViewLocation.setText(advertisment.getLocation());
     }
 
-    private void setupViewPager() {
+    private void setupViewPager(AdverItem advertisment) {
         imageList = new ArrayList<>();
-        imageList.add(ContextCompat.getDrawable(getContext(), R.drawable.ic_creator));
-        imageList.add(ContextCompat.getDrawable(getContext(), R.drawable.ic_app_icon));
-        imageList.add(ContextCompat.getDrawable(getContext(), R.drawable.ic_creator));
+
+        if (advertisment.getImages().size() > 0) {
+            for (String image : advertisment.getImages()) {
+                imageList.add(image);
+            }
+        }
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getContext(), imageList);
         viewPagerAdPictures.setAdapter(viewPagerAdapter);

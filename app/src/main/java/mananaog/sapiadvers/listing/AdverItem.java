@@ -13,6 +13,9 @@ public class AdverItem implements Serializable {
     private String location;
     private ArrayList<String> images = new ArrayList<>();
 
+    public AdverItem() {
+    }
+
     public AdverItem(String id, String title, String shortDescription, String longDescription, int visitors, String phone, String location, ArrayList<String> images) {
         this.id = id;
         this.title = title;

@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import mananaog.sapiadvers.R;
 import mananaog.sapiadvers.listing.details.ListingDetailsFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class ListingFragment extends Fragment {
@@ -84,17 +82,7 @@ public class ListingFragment extends Fragment {
 
                 for (DataSnapshot adverRef : snapshot.getChildren()) {
                     try {
-                        String id = adverRef.child("id").getValue().toString();
-                        String title = adverRef.child("title").getValue().toString();
-                        String shortDescription = adverRef.child("shortDescription").getValue().toString();
-                        String longDescription = adverRef.child("longDescription").getValue().toString();
-                        int visitors = Integer.parseInt(adverRef.child("visitors").getValue().toString());
-                        String phone = adverRef.child("phone").getValue().toString();
-                        String location = adverRef.child("location").getValue().toString();
-                        String[] bazd = {"abc","def","ghf"};
-                        ArrayList<String> images =  new ArrayList<>(Arrays.asList(bazd));
-
-                        AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location, images);
+                        AdverItem advertisment = adverRef.getValue(AdverItem.class);
 
                         if (listingMode.equals(LISTING_MODE_ALL_USER)) {
                             advertList.add(advertisment);
@@ -102,7 +90,7 @@ public class ListingFragment extends Fragment {
                             advertList.add(advertisment);
                         }
                     } catch (Exception e) {
-                        //TODO valami hiba
+                        //Error
                     }
                 }
 

@@ -40,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import mananaog.sapiadvers.MainActivity;
 import mananaog.sapiadvers.R;
 
 import mananaog.sapiadvers.listing.AdverItem;
@@ -164,8 +165,9 @@ public class AddNewAdvertisementFragment extends Fragment {
         AdverItem adver = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location, mImages);
         DatabaseReference adversRef = dbRef.child("advers").child(id);
 
-        Log.e("tyuuuuk", adver.toString());
         adversRef.setValue(adver);
+
+        startActivity(new Intent(getContext(), MainActivity.class));
     }
 
     private void initViews(View view) {

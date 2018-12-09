@@ -19,9 +19,9 @@ import mananaog.sapiadvers.R;
 public class ViewPagerAdapter extends PagerAdapter {
 
     private Context context;
-    private ArrayList<Drawable> imageList;
+    private ArrayList<String> imageList;
 
-    ViewPagerAdapter(Context context, ArrayList<Drawable> imageList) {
+    ViewPagerAdapter(Context context, ArrayList<String> imageList) {
         this.context = context;
         this.imageList = imageList;
     }
@@ -39,8 +39,8 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         ImageView imageView = view.findViewById(R.id.imageViewAdverImage);
 
-        Drawable drawable = imageList.get(position);
-        Glide.with(context).load(drawable).into(imageView);
+        String imageUrl = imageList.get(position);
+        Glide.with(context).load(imageUrl).into(imageView);
 
         container.addView(imageView);
 
