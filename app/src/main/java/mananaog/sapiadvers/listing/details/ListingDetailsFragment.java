@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import mananaog.sapiadvers.R;
 import mananaog.sapiadvers.listing.AdverItem;
@@ -118,8 +119,10 @@ public class ListingDetailsFragment extends Fragment {
                     int visitors = Integer.parseInt(adverRef.child("visitors").getValue().toString());
                     String phone = adverRef.child("phone").getValue().toString();
                     String location = adverRef.child("location").getValue().toString();
+                    String[] bazd = {"abc", "def", "ghf"};
+                    ArrayList<String> images = new ArrayList<>(Arrays.asList(bazd));
 
-                    AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location);
+                    AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location, images);
 
                     fillInputs(advertisment);
                 } else {
@@ -134,7 +137,7 @@ public class ListingDetailsFragment extends Fragment {
         });
     }
 
-    private void fillInputs(AdverItem advertisment){
+    private void fillInputs(AdverItem advertisment) {
         textViewTitle.setText(advertisment.getTitle());
         textViewLongDescription.setText(advertisment.getLongDescription());
         textViewPhoneNumber.setText(advertisment.getPhone());

@@ -10,21 +10,30 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,7 +64,10 @@ public class AddNewAdvertisementFragment extends Fragment {
 
     private Button buttonSave;
 
+    private ContextWrapper cw;
+    private File directory;
     private ArrayList<String> advertismentImages = new ArrayList<>();
+    private ArrayList<String> mImages = new ArrayList<>();
 
     private AddNewAdvertismentImagesAdapter imagesListingAdapter;
     private RecyclerView recycleViewAdverPicturesList;
@@ -64,6 +76,7 @@ public class AddNewAdvertisementFragment extends Fragment {
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference dbRef = database.getReference();
+    private StorageReference mStorageRef;
 
     public static Fragment newInstance() {
         AddNewAdvertisementFragment fragment = new AddNewAdvertisementFragment();
@@ -75,6 +88,9 @@ public class AddNewAdvertisementFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_new_advertisment, container, false);
 
+        cw = new ContextWrapper(getContext());
+        directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+
         initViews(view);
         setupClickListeners();
         setupAdvertismentImagesList();
@@ -83,8 +99,6 @@ public class AddNewAdvertisementFragment extends Fragment {
     }
 
     private void setupAdvertismentImagesList() {
-        advertismentImages.add("https://www.google.ro/search?biw=1396&bih=613&tbm=isch&sa=1&ei=nSHwW4a1Au_6qwHQ8qyACw&q=chicken+clipart&oq=chicken+clip&gs_l=img.1.0.35i39j0i30l9.4322.5399..6668...0.0..0.86.383.5......1....1..gws-wiz-img.......0j0i67._y56WXlAyxo#imgrc=NG2erMayLiFDUM:");
-
         imagesListingAdapter = new AddNewAdvertismentImagesAdapter(advertismentImages, getContext());
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recycleViewAdverPicturesList.setLayoutManager(linearLayoutManager);
@@ -99,7 +113,7 @@ public class AddNewAdvertisementFragment extends Fragment {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveItem();
+                uploadImages();
             }
         });
         imageViewSlideLeft.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +146,12 @@ public class AddNewAdvertisementFragment extends Fragment {
         recycleViewAdverPicturesList.scrollToPosition(linearLayoutManager.findFirstVisibleItemPosition() - 1);
     }
 
+    private void uploadImages() {
+        for (String path : advertismentImages) {
+            storeImageInFirebase(path);
+        }
+    }
+
     private void saveItem() {
         String id = String.valueOf(System.currentTimeMillis());
         String title = editTextTitle.getText().toString();
@@ -141,8 +161,10 @@ public class AddNewAdvertisementFragment extends Fragment {
         String phone = editTextPhoneNumber.getText().toString();
         String location = editTextLocation.getText().toString();
 
-        AdverItem adver = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location);
+        AdverItem adver = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location, mImages);
         DatabaseReference adversRef = dbRef.child("advers").child(id);
+
+        Log.e("tyuuuuk", adver.toString());
         adversRef.setValue(adver);
     }
 
@@ -161,7 +183,6 @@ public class AddNewAdvertisementFragment extends Fragment {
         buttonSave = view.findViewById(R.id.buttonSave);
 
         recycleViewAdverPicturesList = view.findViewById(R.id.recycleViewAdverPicturesList);
-
     }
 
     private void showImageChooseDialog() {
@@ -242,9 +263,7 @@ public class AddNewAdvertisementFragment extends Fragment {
     }
 
     private String saveImageToInternalStorage(Bitmap imageBitmap) {
-        ContextWrapper cw = new ContextWrapper(getContext());
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        File mypath = new File(directory, "profile_" + System.currentTimeMillis() + ".jpg");
+        File mypath = new File(directory, System.currentTimeMillis() + ".jpg");
 
         FileOutputStream fos = null;
         try {
@@ -260,6 +279,39 @@ public class AddNewAdvertisementFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+
         return mypath.getAbsolutePath();
+    }
+
+    private void storeImageInFirebase(String path) {
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        Uri file = Uri.fromFile(new File(path));
+        final StorageReference imagesRef = mStorageRef.child("images/advertisments/" + System.currentTimeMillis() + ".jpg");
+
+        imagesRef.putFile(file).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return imagesRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    String downloadUrl = task.getResult().toString();
+                    mImages.add(downloadUrl);
+
+                    if (mImages.size() == advertismentImages.size()) {
+                        saveItem();
+                    }
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
     }
 }

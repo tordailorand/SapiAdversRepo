@@ -22,6 +22,7 @@ import mananaog.sapiadvers.R;
 import mananaog.sapiadvers.listing.details.ListingDetailsFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class ListingFragment extends Fragment {
@@ -90,8 +91,10 @@ public class ListingFragment extends Fragment {
                         int visitors = Integer.parseInt(adverRef.child("visitors").getValue().toString());
                         String phone = adverRef.child("phone").getValue().toString();
                         String location = adverRef.child("location").getValue().toString();
+                        String[] bazd = {"abc","def","ghf"};
+                        ArrayList<String> images =  new ArrayList<>(Arrays.asList(bazd));
 
-                        AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location);
+                        AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location, images);
 
                         if (listingMode.equals(LISTING_MODE_ALL_USER)) {
                             advertList.add(advertisment);
