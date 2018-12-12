@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,8 +61,10 @@ public class ListingDetailsFragment extends Fragment {
 
     private String showingMode;
 
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference dbRef = database.getReference();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final DatabaseReference dbRef = database.getReference();
+    private final DatabaseReference adversRef = dbRef.child("advers");
+
 
     public static ListingDetailsFragment newInstance() {
         ListingDetailsFragment fragment = new ListingDetailsFragment();
@@ -104,7 +107,6 @@ public class ListingDetailsFragment extends Fragment {
             id = "-1";
         }
 
-        final DatabaseReference adversRef = dbRef.child("advers");
         adversRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

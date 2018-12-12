@@ -13,6 +13,7 @@ public class AdverItem implements Serializable {
     private String location;
     private ArrayList<String> images = new ArrayList<>();
 
+
     public AdverItem() {
     }
 

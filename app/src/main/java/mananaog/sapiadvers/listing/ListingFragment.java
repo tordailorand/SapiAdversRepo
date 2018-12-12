@@ -31,8 +31,9 @@ public class ListingFragment extends Fragment {
 
     private String listingMode;
 
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference dbRef = database.getReference();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference dbRef = database.getReference();
+    private final DatabaseReference adversRef = dbRef.child("advers");
 
     public static ListingFragment newInstance() {
         ListingFragment fragment = new ListingFragment();
@@ -74,7 +75,6 @@ public class ListingFragment extends Fragment {
     }
 
     private void fillAdvertList(final RecyclerView recyclerView) {
-        final DatabaseReference adversRef = dbRef.child("advers");
         adversRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -94,7 +94,6 @@ public class ListingFragment extends Fragment {
                     }
                 }
 
-
                 ListingAdapter listingAdapter = new ListingAdapter(new clickListener(), advertList);
                 recyclerView.setAdapter(listingAdapter);
             }
@@ -107,12 +106,18 @@ public class ListingFragment extends Fragment {
     }
 
     public class clickListener implements IClickListingListener {
-        public void onClick(AdverItem item) {
+        public void onClick(AdverItem advertisment) {
             //TODO on click
             FragmentManager fragmentManager = getFragmentManager();
             if (fragmentManager != null) {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, setupListingDetailsFragment(item.getId()));
+                transaction.replace(R.id.fragment_container, setupListingDetailsFragment(advertisment.getId()));
+
+
+                advertisment.setVisitors(advertisment.getVisitors()+1);
+                adversRef.child(advertisment.getId()).setValue(advertisment);
+
+
                 transaction.commit();
             }
 
