@@ -12,12 +12,13 @@ public class AdverItem implements Serializable {
     private String phone;
     private String location;
     private ArrayList<String> images = new ArrayList<>();
-
+    private String userId;
 
     public AdverItem() {
     }
 
-    public AdverItem(String id, String title, String shortDescription, String longDescription, int visitors, String phone, String location, ArrayList<String> images) {
+    public AdverItem(String id, String title, String shortDescription, String longDescription,
+                     int visitors, String phone, String location, ArrayList<String> images, String userId) {
         this.id = id;
         this.title = title;
         this.shortDescription = shortDescription;
@@ -26,6 +27,15 @@ public class AdverItem implements Serializable {
         this.phone = phone;
         this.location = location;
         this.images = images;
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getId() {
@@ -93,7 +103,6 @@ public class AdverItem implements Serializable {
     }
 
     @Override
-
     public String toString() {
         return "AdverItem{" +
                 "title='" + title + '\'' +

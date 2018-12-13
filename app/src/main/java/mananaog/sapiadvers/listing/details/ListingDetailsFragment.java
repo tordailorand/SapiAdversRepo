@@ -9,6 +9,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import mananaog.sapiadvers.R;
+import mananaog.sapiadvers.auth.User;
 import mananaog.sapiadvers.listing.AdverItem;
 import mananaog.sapiadvers.listing.ListingAdapter;
 import mananaog.sapiadvers.listing.ListingFragment;
@@ -64,6 +66,7 @@ public class ListingDetailsFragment extends Fragment {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference dbRef = database.getReference();
     private final DatabaseReference adversRef = dbRef.child("advers");
+    private final DatabaseReference usersRef = dbRef.child("users");
 
 
     public static ListingDetailsFragment newInstance() {
@@ -113,14 +116,24 @@ public class ListingDetailsFragment extends Fragment {
                 if (snapshot.hasChild(id)) {
                     DataSnapshot adverRef = snapshot.child(id);
 
-                    try {
-                        AdverItem advertisment = adverRef.getValue(AdverItem.class);
+                    final AdverItem advertisment = adverRef.getValue(AdverItem.class);
 
-                        fillInputs(advertisment);
-                        setupViewPager(advertisment);
-                    } catch (Exception e) {
-                        //Error
-                    }
+                    usersRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            DataSnapshot userRef = snapshot.child(advertisment.getUserId());
+
+                            User user = userRef.getValue(User.class);
+
+                            fillInputs(advertisment, user);
+                            setupViewPager(advertisment);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 } else {
                     //TODO nincs ilyen hirdetes
                 }
@@ -133,12 +146,14 @@ public class ListingDetailsFragment extends Fragment {
         });
     }
 
-    private void fillInputs(AdverItem advertisment) {
+    private void fillInputs(AdverItem advertisment, User user) {
         textViewTitle.setText(advertisment.getTitle());
         textViewLongDescription.setText(advertisment.getLongDescription());
         textViewPhoneNumber.setText(advertisment.getPhone());
 //        textViewEmail.setText(advertisment.getEmail());
         textViewLocation.setText(advertisment.getLocation());
+
+        textViewCreator.setText(user.getFirstName() + " " + user.getLastName());
     }
 
     private void setupViewPager(AdverItem advertisment) {

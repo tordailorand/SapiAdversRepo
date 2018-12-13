@@ -29,6 +29,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -75,9 +77,10 @@ public class AddNewAdvertisementFragment extends Fragment {
 
     LinearLayoutManager linearLayoutManager;
 
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference dbRef = database.getReference();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference dbRef = database.getReference();
     private StorageReference mStorageRef;
+    private FirebaseAuth mAuth;
 
     public static Fragment newInstance() {
         AddNewAdvertisementFragment fragment = new AddNewAdvertisementFragment();
@@ -91,6 +94,8 @@ public class AddNewAdvertisementFragment extends Fragment {
 
         cw = new ContextWrapper(getContext());
         directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+
+        mAuth = FirebaseAuth.getInstance();
 
         initViews(view);
         setupClickListeners();
@@ -114,7 +119,11 @@ public class AddNewAdvertisementFragment extends Fragment {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadImages();
+                if (advertismentImages.size() > 0) {
+                    uploadImages();
+                } else {
+                    saveItem();
+                }
             }
         });
         imageViewSlideLeft.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +171,11 @@ public class AddNewAdvertisementFragment extends Fragment {
         String phone = editTextPhoneNumber.getText().toString();
         String location = editTextLocation.getText().toString();
 
-        AdverItem adver = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location, mImages);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        String userId = currentUser.getPhoneNumber();
+
+        AdverItem adver = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location, mImages, userId);
         DatabaseReference adversRef = dbRef.child("advers").child(id);
 
         adversRef.setValue(adver);

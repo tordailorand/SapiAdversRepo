@@ -7,10 +7,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +37,7 @@ public class ListingFragment extends Fragment {
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dbRef = database.getReference();
     private final DatabaseReference adversRef = dbRef.child("advers");
+    private FirebaseAuth mAuth;
 
     public static ListingFragment newInstance() {
         ListingFragment fragment = new ListingFragment();
@@ -50,6 +54,8 @@ public class ListingFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_listing, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
 
         getListingMode();
         setupList(view);
@@ -81,16 +87,17 @@ public class ListingFragment extends Fragment {
                 ArrayList<AdverItem> advertList = new ArrayList<>();
 
                 for (DataSnapshot adverRef : snapshot.getChildren()) {
-                    try {
-                        AdverItem advertisment = adverRef.getValue(AdverItem.class);
+                    AdverItem advertisment = adverRef.getValue(AdverItem.class);
 
-                        if (listingMode.equals(LISTING_MODE_ALL_USER)) {
-                            advertList.add(advertisment);
-                        } else {
+                    if (listingMode.equals(LISTING_MODE_ALL_USER)) {
+                        advertList.add(advertisment);
+                    } else {
+                        FirebaseUser currentUser = mAuth.getCurrentUser();
+                        String userId = currentUser.getPhoneNumber();
+
+                        if (userId.equals(advertisment.getUserId())) {
                             advertList.add(advertisment);
                         }
-                    } catch (Exception e) {
-                        //Error
                     }
                 }
 
@@ -114,7 +121,7 @@ public class ListingFragment extends Fragment {
                 transaction.replace(R.id.fragment_container, setupListingDetailsFragment(advertisment.getId()));
 
 
-                advertisment.setVisitors(advertisment.getVisitors()+1);
+                advertisment.setVisitors(advertisment.getVisitors() + 1);
                 adversRef.child(advertisment.getId()).setValue(advertisment);
 
 
