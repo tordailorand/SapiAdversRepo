@@ -9,6 +9,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import mananaog.sapiadvers.R;
+import mananaog.sapiadvers.auth.User;
 import mananaog.sapiadvers.listing.AdverItem;
 import mananaog.sapiadvers.listing.ListingAdapter;
 import mananaog.sapiadvers.listing.ListingFragment;
@@ -55,12 +59,15 @@ public class ListingDetailsFragment extends Fragment {
     private TextView textViewCreator;
     private TextView textViewTitle;
 
-    private ArrayList<Drawable> imageList;
+    private ArrayList<String> imageList;
 
     private String showingMode;
 
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference dbRef = database.getReference();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final DatabaseReference dbRef = database.getReference();
+    private final DatabaseReference adversRef = dbRef.child("advers");
+    private final DatabaseReference usersRef = dbRef.child("users");
+
 
     public static ListingDetailsFragment newInstance() {
         ListingDetailsFragment fragment = new ListingDetailsFragment();
@@ -75,7 +82,6 @@ public class ListingDetailsFragment extends Fragment {
         getShowingMode();
 
         initViews(view);
-        setupViewPager();
 
         getAdverById();
 
@@ -104,24 +110,30 @@ public class ListingDetailsFragment extends Fragment {
             id = "-1";
         }
 
-        final DatabaseReference adversRef = dbRef.child("advers");
         adversRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.hasChild(id)) {
                     DataSnapshot adverRef = snapshot.child(id);
 
-                    String id = adverRef.child("id").getValue().toString();
-                    String title = adverRef.child("title").getValue().toString();
-                    String shortDescription = adverRef.child("shortDescription").getValue().toString();
-                    String longDescription = adverRef.child("longDescription").getValue().toString();
-                    int visitors = Integer.parseInt(adverRef.child("visitors").getValue().toString());
-                    String phone = adverRef.child("phone").getValue().toString();
-                    String location = adverRef.child("location").getValue().toString();
+                    final AdverItem advertisment = adverRef.getValue(AdverItem.class);
 
-                    AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location);
+                    usersRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            DataSnapshot userRef = snapshot.child(advertisment.getUserId());
 
-                    fillInputs(advertisment);
+                            User user = userRef.getValue(User.class);
+
+                            fillInputs(advertisment, user);
+                            setupViewPager(advertisment);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 } else {
                     //TODO nincs ilyen hirdetes
                 }
@@ -134,19 +146,24 @@ public class ListingDetailsFragment extends Fragment {
         });
     }
 
-    private void fillInputs(AdverItem advertisment){
+    private void fillInputs(AdverItem advertisment, User user) {
         textViewTitle.setText(advertisment.getTitle());
         textViewLongDescription.setText(advertisment.getLongDescription());
         textViewPhoneNumber.setText(advertisment.getPhone());
 //        textViewEmail.setText(advertisment.getEmail());
         textViewLocation.setText(advertisment.getLocation());
+
+        textViewCreator.setText(user.getFirstName() + " " + user.getLastName());
     }
 
-    private void setupViewPager() {
+    private void setupViewPager(AdverItem advertisment) {
         imageList = new ArrayList<>();
-        imageList.add(ContextCompat.getDrawable(getContext(), R.drawable.ic_creator));
-        imageList.add(ContextCompat.getDrawable(getContext(), R.drawable.ic_app_icon));
-        imageList.add(ContextCompat.getDrawable(getContext(), R.drawable.ic_creator));
+
+        if (advertisment.getImages().size() > 0) {
+            for (String image : advertisment.getImages()) {
+                imageList.add(image);
+            }
+        }
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getContext(), imageList);
         viewPagerAdPictures.setAdapter(viewPagerAdapter);

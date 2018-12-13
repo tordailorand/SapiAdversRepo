@@ -1,6 +1,7 @@
 package mananaog.sapiadvers.listing;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class AdverItem implements Serializable {
     private String id;
@@ -10,8 +11,14 @@ public class AdverItem implements Serializable {
     private int visitors;
     private String phone;
     private String location;
+    private ArrayList<String> images = new ArrayList<>();
+    private String userId;
 
-    public AdverItem(String id, String title, String shortDescription, String longDescription, int visitors, String phone, String location) {
+    public AdverItem() {
+    }
+
+    public AdverItem(String id, String title, String shortDescription, String longDescription,
+                     int visitors, String phone, String location, ArrayList<String> images, String userId) {
         this.id = id;
         this.title = title;
         this.shortDescription = shortDescription;
@@ -19,6 +26,16 @@ public class AdverItem implements Serializable {
         this.visitors = visitors;
         this.phone = phone;
         this.location = location;
+        this.images = images;
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getId() {
@@ -77,6 +94,14 @@ public class AdverItem implements Serializable {
         this.location = location;
     }
 
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
+    }
+
     @Override
     public String toString() {
         return "AdverItem{" +
@@ -84,6 +109,7 @@ public class AdverItem implements Serializable {
                 ", shortDescription='" + shortDescription + '\'' +
                 ", longDescription='" + longDescription + '\'' +
                 ", visitors=" + visitors +
+                ", images=" + images.toString() +
                 '}';
     }
 

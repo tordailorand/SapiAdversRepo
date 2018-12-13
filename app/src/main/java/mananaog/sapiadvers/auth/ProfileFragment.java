@@ -1,8 +1,6 @@
-package mananaog.sapiadvers.listing.details;
+package mananaog.sapiadvers.auth;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,12 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import mananaog.sapiadvers.MainActivity;
 import mananaog.sapiadvers.R;
-import mananaog.sapiadvers.SplashActivity;
-import mananaog.sapiadvers.auth.LoginActivity;
 import mananaog.sapiadvers.listing.ListingFragment;
 
 
