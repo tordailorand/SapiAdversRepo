@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/chicken_logo" />
+        app:srcCompat="@drawable/ic_advertisment" />
 
     <ImageView
         android:id="@+id/imageViewProfilePicture"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewMainImage"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/ic_profile" />
 
     <TextView
         android:id="@+id/textViewVisitors"

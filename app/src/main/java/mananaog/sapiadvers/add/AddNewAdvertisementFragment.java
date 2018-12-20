@@ -147,6 +147,7 @@ public class AddNewAdvertisementFragment extends Fragment {
     }
 
     private void initViews(View view) {
+
         editTextTitle = view.findViewById(R.id.editTextTitle);
         editTextShortDescription = view.findViewById(R.id.editTextShortDescription);
         editTextLongDescription = view.findViewById(R.id.editTextLongDescription);

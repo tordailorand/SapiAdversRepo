@@ -19,6 +19,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity( new Intent(SplashActivity.this,MainActivity.class));
                 finish();
             }
-        },100); //TODO - 3000 sec !!!
+        },3000); //TODO - 3000 sec !!!
     }
 }
