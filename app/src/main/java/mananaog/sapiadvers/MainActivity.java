@@ -9,17 +9,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.List;
 
 import mananaog.sapiadvers.add.AddNewAdvertisementFragment;
 import mananaog.sapiadvers.auth.SignupActivity;
 import mananaog.sapiadvers.listing.ListingFragment;
 import mananaog.sapiadvers.listing.details.ListingDetailsFragment;
-import mananaog.sapiadvers.listing.details.ProfileFragment;
+import mananaog.sapiadvers.auth.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity {

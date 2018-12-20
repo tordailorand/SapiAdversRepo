@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,8 +34,10 @@ public class ListingFragment extends Fragment {
 
     private String listingMode;
 
-    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference dbRef = database.getReference();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference dbRef = database.getReference();
+    private final DatabaseReference adversRef = dbRef.child("advers");
+    private FirebaseAuth mAuth;
 
     public static ListingFragment newInstance() {
         ListingFragment fragment = new ListingFragment();
@@ -50,6 +54,8 @@ public class ListingFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_listing, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
 
         getListingMode();
         setupList(view);
@@ -75,34 +81,25 @@ public class ListingFragment extends Fragment {
     }
 
     private void fillAdvertList(final RecyclerView recyclerView) {
-        final DatabaseReference adversRef = dbRef.child("advers");
         adversRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 ArrayList<AdverItem> advertList = new ArrayList<>();
 
                 for (DataSnapshot adverRef : snapshot.getChildren()) {
-                    try {
-                        String id = adverRef.child("id").getValue().toString();
-                        String title = adverRef.child("title").getValue().toString();
-                        String shortDescription = adverRef.child("shortDescription").getValue().toString();
-                        String longDescription = adverRef.child("longDescription").getValue().toString();
-                        int visitors = Integer.parseInt(adverRef.child("visitors").getValue().toString());
-                        String phone = adverRef.child("phone").getValue().toString();
-                        String location = adverRef.child("location").getValue().toString();
+                    AdverItem advertisment = adverRef.getValue(AdverItem.class);
 
-                        AdverItem advertisment = new AdverItem(id, title, shortDescription, longDescription, visitors, phone, location);
+                    if (listingMode.equals(LISTING_MODE_ALL_USER)) {
+                        advertList.add(advertisment);
+                    } else {
+                        FirebaseUser currentUser = mAuth.getCurrentUser();
+                        String userId = currentUser.getPhoneNumber();
 
-                        if (listingMode.equals(LISTING_MODE_ALL_USER)) {
-                            advertList.add(advertisment);
-                        } else {
+                        if (userId.equals(advertisment.getUserId())) {
                             advertList.add(advertisment);
                         }
-                    } catch (Exception e) {
-                        //TODO valami hiba
                     }
                 }
-
 
                 ListingAdapter listingAdapter = new ListingAdapter(new clickListener(), advertList);
                 recyclerView.setAdapter(listingAdapter);
@@ -116,12 +113,18 @@ public class ListingFragment extends Fragment {
     }
 
     public class clickListener implements IClickListingListener {
-        public void onClick(AdverItem item) {
+        public void onClick(AdverItem advertisment) {
             //TODO on click
             FragmentManager fragmentManager = getFragmentManager();
             if (fragmentManager != null) {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, setupListingDetailsFragment(item.getId()));
+                transaction.replace(R.id.fragment_container, setupListingDetailsFragment(advertisment.getId()));
+
+
+                advertisment.setVisitors(advertisment.getVisitors() + 1);
+                adversRef.child(advertisment.getId()).setValue(advertisment);
+
+
                 transaction.commit();
             }
 
