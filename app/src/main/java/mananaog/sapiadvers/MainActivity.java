@@ -22,6 +22,7 @@ import mananaog.sapiadvers.auth.ProfileFragment;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private Fragment selectedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_add:
                     selectedFragment = AddNewAdvertisementFragment.newInstance();
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = ProfileFragment.newInstance();
                     break;
             }
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, selectedFragment);
             transaction.commit();
